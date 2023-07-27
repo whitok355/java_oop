@@ -1,4 +1,3 @@
-package java_test;
 import java.util.GregorianCalendar;
 
 /**

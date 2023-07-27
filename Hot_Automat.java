@@ -1,5 +1,3 @@
-package java_test;
-
 public class Hot_Automat extends Automat{
     
     public Product getProduct(String name,  double volume, double temp){
