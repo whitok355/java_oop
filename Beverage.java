@@ -3,7 +3,7 @@ import java.util.GregorianCalendar;
 
 public class Beverage extends Product {
 
-    Double volume;
+    private Double volume;
 
     public Beverage(String name, Double price, Integer quantity, GregorianCalendar best_before, Double volume){
        super(name, price, quantity, best_before);

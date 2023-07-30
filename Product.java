@@ -33,8 +33,4 @@ public abstract class Product {
         return this.best_before;
     }
 
-    // @Override
-    //     public String toString(){
-    //         return "Product [name =" + this.name + ", price =" + this.price + ", quantity = " + this.quantity + ", best defore =  year " + this.best_before.get(1) + " month: "+ this.best_before.get(2) +"]";
-    //     }
 }

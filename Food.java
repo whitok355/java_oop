@@ -3,7 +3,7 @@ import java.util.GregorianCalendar;
 
 public class Food extends Product {
 
-    Double weight;
+    private Double weight;
     public Food(String name, Double price, Integer quantity, GregorianCalendar best_before, Double weight){
         super(name, price, quantity, best_before);
         this.weight = weight;

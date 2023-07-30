@@ -1,7 +1,7 @@
 import java.util.GregorianCalendar;
 
 public class Hot_Beverage extends Beverage {
-    Double temp;
+    private Double temp;
 
     public Hot_Beverage(String name, Double price, Integer quantity, GregorianCalendar best_before, Double volume, Double temp){
         super(name, price, quantity, best_before, volume);
