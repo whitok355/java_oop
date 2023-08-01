@@ -1,9 +1,10 @@
 import java.util.GregorianCalendar;
 
+
 /**
  * Product
  */
-public abstract class Product {
+public class Product {
 
     private String name;
     private Double price;
@@ -33,4 +34,8 @@ public abstract class Product {
         return this.best_before;
     }
 
+    @Override
+    public String toString(){
+        return "Product [name = " + get_name() + ", price = " + get_price() + ", quantity = " + get_quantity() + ", best defore =  year " + get_best_before().get(1) +"]";
+    }
 }

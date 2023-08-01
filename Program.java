@@ -1,34 +1,124 @@
+// Реализовать метод оформления заказ createOrder(...):
+// нужно пройти по продуктам, проверить наличие (>0), "запомнить цену"
+// Создать объек Order с полями List<Product>, который содержит только продукты из наличия, и поле стоимость - сумма цен продуктов, входящих в заказ.
+// Вернуть объект Order. В классе Order переопределить метод toString() - показывать состав заказа, заказчика и общую стоимость продуктов.
+
+// (**) При заказе от человека учитывать желаемый объем или вес и, для напитков температуру, продуктов.
+// + любые доработки по желанию - добавить комментарии к коду
+
+// Формат сдачи: ссылка на гитхаб проект
+
+
+
 import java.util.GregorianCalendar;
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Program {
     public static void main(String[] args) {
-       
+        String[] nomenclature = {"Apricot", "Pineapple ", "Orange", "Watermelon", "Banana", "Mutton", "Pancake", "Grape"};
+        Double[] price = {34.3, 56.3, 23.5, 89.3, 12.3, 45.4, 23.5, 90.3};
+        GregorianCalendar[] best_before = {
+        new GregorianCalendar(2023, 10, 0, 0, 0),
+        new GregorianCalendar(2023, 11, 0, 0, 0),
+        new GregorianCalendar(2024, 03, 0, 0, 0),
+        new GregorianCalendar(2023, 12, 0, 0, 0),
+        new GregorianCalendar(2023, 10, 0, 0, 0),
+        new GregorianCalendar(2024, 01, 0, 0, 0),
+        new GregorianCalendar(2024, 02, 0, 0, 0),
+        new GregorianCalendar(2023, 07, 0, 0, 0)
+    };
+        Integer max_price;
         ArrayList<Product> product_list = new ArrayList<>();
-        ArrayList<Product> hot_product_list = new ArrayList<>();
 
-        Automat automat_list = new Automat();
-        Hot_Automat hot_automat_list = new Hot_Automat();
+        for(int i = 1; i <= 20; i++){
+            Product product = new Product(
+                    nomenclature[get_random(nomenclature.length)],
+                    price[get_random(nomenclature.length)],
+                    get_random(nomenclature.length),
+                    best_before[get_random(nomenclature.length)]
+                );
+            product_list.add(product);
+        }
 
-        product_list.add(new Food("apple", 43.19, 13, new GregorianCalendar(2023, 10, 0, 0, 0), 100.4));
-        product_list.add(new Beverage("juce", 1.19, 2, new GregorianCalendar(2023, 9, 01, 0 , 0), 300.50));
-        product_list.add(new Food("orange", 3.19, 1, new GregorianCalendar(2023, 8, 03, 0 ,0), 90.4));
+        Scanner scan = new Scanner(System.in);
 
-        hot_product_list.add(new Hot_Beverage("tea", 0.49, 1, new GregorianCalendar(2023, 8, 03, 0 ,0), 43.4, 70.0));
-        hot_product_list.add(new Hot_Beverage("tea", 0.49, 1, new GregorianCalendar(2023, 8, 03, 0 ,0), 143.4, 80.0));
-        hot_product_list.add(new Hot_Beverage("tea", 0.49, 1, new GregorianCalendar(2023, 8, 03, 0 ,0), 243.4, 90.0));
-        hot_product_list.add(new Hot_Beverage("coffe", 0.49, 1, new GregorianCalendar(2023, 8, 03, 0 ,0), 343.4, 100.0));
-        hot_product_list.add(new Hot_Beverage("coffe", 0.49, 1, new GregorianCalendar(2023, 8, 03, 0 ,0), 443.4, 30.0));
-        hot_product_list.add(new Hot_Beverage("coffe", 0.49, 1, new GregorianCalendar(2023, 8, 03, 0 ,0), 543.4, 50.0));
-        
-        automat_list.initProduct(product_list);
-        hot_automat_list.initProduct(hot_product_list);
+        System.out.print("\nХотите сделать заказ? 1 - хочу, 2 -не хочу \n Введите значение: ");
+        Integer value = scan.nextInt();
 
-        String name = "tea";
-        Double volume = 43.4;
-        Double temp = 70.0;
+        System.out.print("Укажите предельную цену продукта (целое число)");
+        max_price = scan.nextInt();
 
-        System.out.print(hot_automat_list.getProduct(name, volume, temp));
-    
+        show_product(product_list, max_price); 
+
+        if(value == 1){
+           create_order(product_list, max_price);
+        } else{
+            System.out.print("До новых встреч");
+        }
     }
+    
+    /*
+     * Метод формирующий случайные числа, для заполнения списка товаров
+     */
+    public static Integer get_random(Integer max){ 
+        Random rand = new Random();
+        return rand.nextInt(max);
+    }
+
+    /*
+     * Метод перебирающий список товаров.
+     * list - список товара
+     * param - параметр для сортировки (цена)
+     */
+    public static void show_product(ArrayList<Product> list, Integer param){ // 
+        System.out.print("В нашем магазине на текущий момент имеется\n");
+        list.forEach(product -> {
+            if(product.get_price() < param){
+                System.out.println();
+                System.out.printf("%s - %s", list.indexOf(product)+1, product.toString());
+            }
+        });
+    }
+
+    /*
+     * Метод по соданию заказа
+     * param - параметр пожелания покупателя (в данном случае по цене товара)
+     * list - список всех продуктов  
+     */
+
+    public static void create_order(ArrayList<Product> list, Integer param){
+        Scanner scan = new Scanner(System.in);
+        ArrayList<Product> order_list = new ArrayList<>();
+
+        Boolean flag = true;
+
+        while(flag){
+            System.out.print("\nУкажите id товара, который вы бы хотели приобрести (для выхода введите 999)");
+            Integer id = scan.nextInt();
+            if(id == 999 && list.size() == 0){
+                System.out.print("Очень жаль, что вы не сделали заказ. До новых встреч");
+                flag = false;
+            } else if(id == 999 && list.size() != 0){
+                System.out.print("Ваш заказ:");
+                Order order = new Order(order_list);
+                order.show_order();
+                System.out.printf("\n Стоимость Вашего заказа: %s", order.show_summ());
+                flag = false;
+            } else{
+                if(list.get(id-1).get_quantity() == 0){
+                    System.out.print("Данного товара нет в наличие\n");
+                } else {
+                    if(list.get(id-1).get_price() > param){
+                        System.out.print("Стоиомсть товара превышает Ваши ожидания\n");
+                    } else{
+                        order_list.add(list.get(id-1));
+                        System.out.print("Товар добавлен в заказ \n");
+                    }
+                }
+            }
+        }
+    }
+
 }
